@@ -18,14 +18,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Run npm audit
+      - name: Audit summary
         run: |
-          echo "## 🔒 npm audit" >> $GITHUB_STEP_SUMMARY
-          npm audit --audit-level=high || {
-            echo "❌ High severity vulnerabilities detected" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          }
-          echo "✅ No high severity vulnerabilities" >> $GITHUB_STEP_SUMMARY
+          npm audit --json > audit.json || true
+          echo "## npm audit result" >> $GITHUB_STEP_SUMMARY
+          jq -r '
+            .vulnerabilities
+            | to_entries[]
+            | "- **\(.key)** (\(.value.severity)): \(.value.title)"
+          ' audit.json >> $GITHUB_STEP_SUMMARY
+
 
       - name: Run npm audit
         run: npm audit --audit-level=high
