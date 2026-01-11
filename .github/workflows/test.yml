@@ -31,8 +31,8 @@ jobs:
             "パッケージ: \(.name)
             深刻度: \(.severity) | 直接依存: \(.isDirect) | 修正可能: \(.fixAvailable)
             影響バージョン: \(.range)
-            -------------------------"
-            ' audit.json 2>/dev/null || echo "脆弱性はありません"
+            -------------------------"'
           fi
 
-          npm audit --audit-level=moderate
+      - name: npm audit 
+        run: npm audit --audit-level=moderate
