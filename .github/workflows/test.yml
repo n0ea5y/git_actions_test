@@ -1,0 +1,30 @@
+name: test workflow
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: 脆弱性チェック
+        run: |
+          npm audit --json  | jq -r ' .vulnerabilities[]? | 
+            "パッケージ: \(.name)
+            深刻度: \(.severity) | 直接依存: \(.isDirect) | 修正可能: \(.fixAvailable)
+            影響バージョン: \(.range)
+            -------------------------"'
+
+      - name: セキュリティチェック（moderate以上で失敗）
+        run: npm audit --audit-level=moderate
