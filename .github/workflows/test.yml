@@ -20,8 +20,7 @@ jobs:
       
       - name: 脆弱性チェック
         run: |
-          npm audit --json  | jq -r '
-            .vulnerabilities[]? | 
+          npm audit --json  | jq -r ' .vulnerabilities[]? | 
             "パッケージ: \(.name)
             深刻度: \(.severity) | 直接依存: \(.isDirect) | 修正可能: \(.fixAvailable)
             影響バージョン: \(.range)
