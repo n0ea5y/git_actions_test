@@ -21,18 +21,12 @@ jobs:
       - name: npm audit execution 
         run: |
           # audit結果をファイルに保存
-          npm audit --json > audit.json
-          
-          # 詳細を表示
-          if [ -f audit.json ]; then
-            echo "## 脆弱性詳細"
-            jq -r '
+          npm audit --json  | jq -r '
             .vulnerabilities[]? | 
             "パッケージ: \(.name)
             深刻度: \(.severity) | 直接依存: \(.isDirect) | 修正可能: \(.fixAvailable)
             影響バージョン: \(.range)
             -------------------------"'
-          fi
 
       - name: npm audit 
         run: npm audit --audit-level=moderate
