@@ -1,10 +1,6 @@
 {
   "auditReportVersion": 2,
   "vulnerabilities": {
-
-
-
-    
     "lodash": {
       "name": "lodash",
       "severity": "high",
