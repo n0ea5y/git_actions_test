@@ -20,16 +20,13 @@ jobs:
       
       - name: Run npm audit (table)
         run: |
-          npm audit --json > audit.json || true
-          echo "Package | Severity | Title"
-          echo "--------|----------|------"
-          jq -r '
-            .vulnerabilities
-            | to_entries[]
-            | "\(.key) | \(.value.severity) | \(.value.title)"
-          ' audit.json
-
-
+          npm audit --json | jq -r '
+          .vulnerabilities[]? | 
+          "パッケージ: \(.name)
+          深刻度: \(.severity) | 直接依存: \(.isDirect) | 修正可能: \(.fixAvailable)
+          影響バージョン: \(.range)
+          -------------------------"
+          '
 
       - name: Run npm audit
         run: npm audit --audit-level=high
