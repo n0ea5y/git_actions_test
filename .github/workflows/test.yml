@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "GitHub Actions is working!"
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
