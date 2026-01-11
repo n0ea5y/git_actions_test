@@ -18,9 +18,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: npm audit execution 
+      - name: 脆弱性チェック
         run: |
-          # audit結果をファイルに保存
           npm audit --json  | jq -r '
             .vulnerabilities[]? | 
             "パッケージ: \(.name)
@@ -28,5 +27,5 @@ jobs:
             影響バージョン: \(.range)
             -------------------------"'
 
-      - name: npm audit 
+      - name: セキュリティチェック（moderate以上で失敗）
         run: npm audit --audit-level=moderate
